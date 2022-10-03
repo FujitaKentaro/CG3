@@ -11,6 +11,10 @@ GameScene::~GameScene()
 {
 	delete spriteBG;
 	delete object3d;
+
+	// スプライトの解放
+	delete(sprite1);
+	delete(sprite2);
 }
 
 void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
@@ -29,9 +33,15 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 
 	// テクスチャ読み込み
 	Sprite::LoadTexture(1, L"Resources/background.png");
+	Sprite::LoadTexture(2, L"Resources/texture.png");
 
 	// 背景スプライト生成
 	spriteBG = Sprite::Create(1, { 0.0f,0.0f });
+
+	sprite1 = Sprite::Create(2, { 0.0f,0.0f });
+	sprite2 = Sprite::Create(2, { 500,500 },{1,0,0,1},{0,0},false,true);
+
+
 	// 3Dオブジェクト生成
 	object3d = Object3d::Create();
 	object3d->Update();
@@ -110,6 +120,10 @@ void GameScene::Draw()
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+	
+	/*sprite1->Draw();
+	sprite2->Draw();*/
+
 
 	// デバッグテキストの描画
 	debugText.DrawAll(cmdList);
