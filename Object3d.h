@@ -150,6 +150,12 @@ private: // 静的メンバ変数
 	// 頂点インデックス配列
 	static unsigned short indices[indexCount];
 
+	// ビルボード
+	static XMMATRIX matBillboard;
+	// Y軸回りビルボード行列
+	static XMMATRIX matBillboardY;
+
+
 private:// 静的メンバ関数
 	/// <summary>
 	/// デスクリプタヒープの初期化
