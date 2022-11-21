@@ -36,8 +36,10 @@ void main(
 	GSOutput element;
 	//４点分回す
 	for (uint i = 0; i < vnum; i++) {
+		// 中心空のオフセットをビルボード回転 （モデル座標）
+		float4 offset = mul(matBillboard, offset_array[i]);
 		// ワールド座標ベースで、ずらす
-		element.svpos = input[0].pos + offset_array[i];
+		element.svpos = input[0].pos + offset;
 		// ビュー、射影変換
 		element.svpos = mul(mat, element.svpos);
 		element.uv = uv_array[i];

@@ -27,7 +27,7 @@ CD3DX12_CPU_DESCRIPTOR_HANDLE ParticleManager::cpuDescHandleSRV;
 CD3DX12_GPU_DESCRIPTOR_HANDLE ParticleManager::gpuDescHandleSRV;
 XMMATRIX ParticleManager::matView{};
 XMMATRIX ParticleManager::matProjection{};
-XMFLOAT3 ParticleManager::eye = { 0, 0, -5.0f };
+XMFLOAT3 ParticleManager::eye = { 5.0f, 0, 5.0f };
 XMFLOAT3 ParticleManager::target = { 0, 0, 0 };
 XMFLOAT3 ParticleManager::up = { 0, 1, 0 };
 D3D12_VERTEX_BUFFER_VIEW ParticleManager::vbView{};
@@ -433,139 +433,23 @@ void ParticleManager::CreateModel()
 {
 	HRESULT result = S_FALSE;
 
-	{
-		//std::vector<VertexPosNormalUv> realVertices;
-		//// 頂点座標の計算（重複あり）
-		//{
-		//	realVertices.resize((division + 1) * 2);
-		//	int index = 0;
-		//	float zValue;
+	
+	//VertexPos verticesPoint[] = {
+	//	{{0.0f,0.0f,0.0f}},
+	//	{{0.0f,10.0f,0.0f}},
+	//	{{0.0f,0.0f,10.0f}},
+	//};
+	//// メンバ変数にコピー
+	//std::copy(std::begin(verticesPoint), std::end(verticesPoint), vertices);
 
-		//	// 底面
-		//	zValue = prizmHeight / 2.0f;
-		//	for (int i = 0; i < division; i++)
-		//	{
-		//		XMFLOAT3 vertex;
-		//		vertex.x = radius * sinf(XM_2PI / division * i);
-		//		vertex.y = radius * cosf(XM_2PI / division * i);
-		//		vertex.z = zValue;
-		//		realVertices[index++].pos = vertex;
-		//	}
-		//	realVertices[index++].pos = XMFLOAT3(0, 0, zValue);	// 底面の中心点
-		//	// 天面
-		//	zValue = -prizmHeight / 2.0f;
-		//	for (int i = 0; i < division; i++)
-		//	{
-		//		XMFLOAT3 vertex;
-		//		vertex.x = radius * sinf(XM_2PI / division * i);
-		//		vertex.y = radius * cosf(XM_2PI / division * i);
-		//		vertex.z = zValue;
-		//		realVertices[index++].pos = vertex;
-		//	}
-		//	realVertices[index++].pos = XMFLOAT3(0, 0, zValue);	// 天面の中心点
-		//}
+	for (int i = 0; i < vertexCount; i++) {
+		// XYZ すべて｛ -5.0ｆ,+5.0ｆ ｝でランダムに分布
+		const float rnd_width = 10.0f;
+		vertices[i].pos.x = (float)rand() / RAND_MAX * rnd_width - rnd_width / 2.0f;
+		vertices[i].pos.y = (float)rand() / RAND_MAX * rnd_width - rnd_width / 2.0f;
+		vertices[i].pos.z = (float)rand() / RAND_MAX * rnd_width - rnd_width / 2.0f;
 
-		//// 頂点座標の計算（重複なし）
-		//{
-		//	int index = 0;
-		//	// 底面
-		//	for (int i = 0; i < division; i++)
-		//	{
-		//		unsigned short index0 = i + 1;
-		//		unsigned short index1 = i;
-		//		unsigned short index2 = division;
-
-		//		vertices[index++] = realVertices[index0];
-		//		vertices[index++] = realVertices[index1];
-		//		vertices[index++] = realVertices[index2]; // 底面の中心点
-		//	}
-		//	// 底面の最後の三角形の1番目のインデックスを0に書き換え
-		//	vertices[index - 3] = realVertices[0];
-
-		//	int topStart = division + 1;
-		//	// 天面
-		//	for (int i = 0; i < division; i++)
-		//	{
-		//		unsigned short index0 = topStart + i;
-		//		unsigned short index1 = topStart + i + 1;
-		//		unsigned short index2 = topStart + division;
-
-		//		vertices[index++] = realVertices[index0];
-		//		vertices[index++] = realVertices[index1];
-		//		vertices[index++] = realVertices[index2]; // 天面の中心点
-		//	}
-		//	// 天面の最後の三角形の1番目のインデックスを0に書き換え
-		//	vertices[index - 2] = realVertices[topStart];
-
-		//	// 側面
-		//	for (int i = 0; i < division; i++)
-		//	{
-		//		unsigned short index0 = i + 1;
-		//		unsigned short index1 = topStart + i + 1;
-		//		unsigned short index2 = i;
-		//		unsigned short index3 = topStart + i;
-
-		//		if (i == division - 1)
-		//		{
-		//			index0 = 0;
-		//			index1 = topStart;
-		//		}
-
-		//		vertices[index++] = realVertices[index0];
-		//		vertices[index++] = realVertices[index1];
-		//		vertices[index++] = realVertices[index2];
-
-		//		vertices[index++] = realVertices[index2];
-		//		vertices[index++] = realVertices[index1];
-		//		vertices[index++] = realVertices[index3];
-		//	}
-		//}
-
-		//// 頂点インデックスの設定
-		//{
-		//	for (int i = 0; i < _countof(indices); i++)
-		//	{
-		//		indices[i] = i;
-		//	}
-		//}
-
-		//// 法線方向の計算
-		//for (int i = 0; i < _countof(indices) / 3; i++)
-		//{// 三角形１つごとに計算していく
-		//	// 三角形のインデックスを取得
-		//	unsigned short index0 = indices[i * 3 + 0];
-		//	unsigned short index1 = indices[i * 3 + 1];
-		//	unsigned short index2 = indices[i * 3 + 2];
-		//	// 三角形を構成する頂点座標をベクトルに代入
-		//	XMVECTOR p0 = XMLoadFloat3(&vertices[index0].pos);
-		//	XMVECTOR p1 = XMLoadFloat3(&vertices[index1].pos);
-		//	XMVECTOR p2 = XMLoadFloat3(&vertices[index2].pos);
-		//	// p0→p1ベクトル、p0→p2ベクトルを計算
-		//	XMVECTOR v1 = XMVectorSubtract(p1, p0);
-		//	XMVECTOR v2 = XMVectorSubtract(p2, p0);
-		//	// 外積は両方から垂直なベクトル
-		//	XMVECTOR normal = XMVector3Cross(v1, v2);
-		//	// 正規化（長さを1にする)
-		//	normal = XMVector3Normalize(normal);
-		//	// 求めた法線を頂点データに代入
-		//	XMStoreFloat3(&vertices[index0].normal, normal);
-		//	XMStoreFloat3(&vertices[index1].normal, normal);
-		//	XMStoreFloat3(&vertices[index2].normal, normal);
-		//}
 	}
-	VertexPos verticesPoint[] = {
-		{{0.0f,0.0f,0.0f}},
-	};
-	// メンバ変数にコピー
-	std::copy(std::begin(verticesPoint), std::end(verticesPoint), vertices);
-	// 四角形のインデックスデータ
-	unsigned short indicesSquare[] = {
-		0,1,2,	// 三角1
-		2,1,3,	// 三角2
-	};
-	// メンバ変数にコピー
-
-	//std::copy(std::begin(indicesSquare), std::end(indicesSquare), indices);
 
 
 	UINT sizeVB = static_cast<UINT>(sizeof(vertices));
@@ -594,33 +478,6 @@ void ParticleManager::CreateModel()
 	vbView.SizeInBytes = sizeof(vertices);
 	vbView.StrideInBytes = sizeof(vertices[0]);
 
-	//UINT sizeIB = static_cast<UINT>(sizeof(indices));
-	// リソース設定
-	//resourceDesc.Width = sizeIB;
-
-	//// インデックスバッファ生成
-	//result = device->CreateCommittedResource(
-	//	&heapProps, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
-	//	IID_PPV_ARGS(&indexBuff));
-
-	//// インデックスバッファへのデータ転送
-	//unsigned short* indexMap = nullptr;
-	//result = indexBuff->Map(0, nullptr, (void**)&indexMap);
-	//if (SUCCEEDED(result)) {
-
-	//	// 全インデックスに対して
-	//	for (int i = 0; i < _countof(indices); i++)
-	//	{
-	//		indexMap[i] = indices[i];	// インデックスをコピー
-	//	}
-
-	//	indexBuff->Unmap(0, nullptr);
-	//}
-
-	//// インデックスバッファビューの作成
-	//ibView.BufferLocation = indexBuff->GetGPUVirtualAddress();
-	//ibView.Format = DXGI_FORMAT_R16_UINT;
-	//ibView.SizeInBytes = sizeof(indices);
 }
 
 void ParticleManager::UpdateViewMatrix()
@@ -736,39 +593,14 @@ bool ParticleManager::Initialize()
 void ParticleManager::Update()
 {
 	HRESULT result;
-	XMMATRIX matScale, matRot, matTrans;
-
-	// スケール、回転、平行移動行列の計算
-	matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
-	matRot = XMMatrixIdentity();
-	matRot *= XMMatrixRotationZ(XMConvertToRadians(rotation.z));
-	matRot *= XMMatrixRotationX(XMConvertToRadians(rotation.x));
-	matRot *= XMMatrixRotationY(XMConvertToRadians(rotation.y));
-	matTrans = XMMatrixTranslation(position.x, position.y, position.z);
-
-	// ワールド行列の合成
-	matWorld = XMMatrixIdentity(); // 変形をリセット
-
-	matWorld *= matScale; // ワールド行列にスケーリングを反映
-	matWorld *= matRot; // ワールド行列に回転を反映
-
-	//matWorld *= matBillboard;// ビルボード行列を掛ける
-	//matWorld *= matBillboardY;// Y軸ビルボード行列を掛ける
-
-	matWorld *= matTrans; // ワールド行列に平行移動を反映
-
-	// 親オブジェクトがあれば
-	if (parent != nullptr) {
-		// 親オブジェクトのワールド行列を掛ける
-		matWorld *= parent->matWorld;
-	}
-
+	
 	// 定数バッファへデータ転送
 	ConstBufferData* constMap = nullptr;
 	result = constBuff->Map(0, nullptr, (void**)&constMap);
 	//constMap->color = color;
 	//constMap->mat = matWorld * matView * matProjection;	// 行列の合成
 	constMap->mat = matView * matProjection;
+	constMap->matBillboard = matBillboard;
 	constBuff->Unmap(0, nullptr);
 }
 
@@ -792,5 +624,5 @@ void ParticleManager::Draw()
 	// シェーダリソースビューをセット
 	cmdList->SetGraphicsRootDescriptorTable(1, gpuDescHandleSRV);
 	// 描画コマンド
-	cmdList->DrawIndexedInstanced(_countof(vertices), 1, 0, 0, 0);
+	cmdList->DrawInstanced(_countof(vertices), 1, 0, 0);
 }
