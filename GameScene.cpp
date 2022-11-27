@@ -45,6 +45,28 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	// 3Dオブジェクト生成
 	particleMan = ParticleManager::Create();
 	particleMan->Update();
+
+	for (int i = 0; i < 100; i++) {
+		// XYZ すべて｛ -5.0ｆ,+5.0ｆ ｝でランダムに分布
+		const float md_pos = 10.0f;
+		XMFLOAT3 pos{};
+		pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+		pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+		pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+		// XYZ すべて｛ -5.0ｆ,+5.0ｆ ｝でランダムに分布
+		const float md_vel = 10.0f;
+		XMFLOAT3 vel{};
+		vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+		vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+		vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+		// 重力に見立ててYのみ[-0.001ｆ、0]でランダムに分布
+		const float md_acc = -0.001f;
+		XMFLOAT3 acc{};
+		pos.y = -(float)rand() / RAND_MAX * md_acc;
+
+		// 追加
+		particleMan->Add(60, pos, vel, acc);
+	}
 }
 
 void GameScene::Update()
@@ -73,6 +95,27 @@ void GameScene::Update()
 		if (input->PushKey(DIK_D)) { ParticleManager::CameraMoveEyeVector({ +1.0f,0.0f,0.0f }); }
 		else if (input->PushKey(DIK_A)) { ParticleManager::CameraMoveEyeVector({ -1.0f,0.0f,0.0f }); }
 	}
+	for (int i = 0; i < 100; i++) {
+		// XYZ すべて｛ -5.0ｆ,+5.0ｆ ｝でランダムに分布
+		const float md_pos = 10.0f;
+		XMFLOAT3 pos{};
+		pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+		pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+		pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+		// XYZ すべて｛ -5.0ｆ,+5.0ｆ ｝でランダムに分布
+		const float md_vel = 10.0f;
+		XMFLOAT3 vel{};
+		vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+		vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+		vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+		// 重力に見立ててYのみ[-0.001ｆ、0]でランダムに分布
+		const float md_acc = -0.001f;
+		XMFLOAT3 acc{};
+		pos.y = -(float)rand() / RAND_MAX * md_acc;
+
+		// 追加
+		particleMan->Add(60, pos, vel, acc);
+	}
 
 	particleMan->Update();
 }
@@ -86,7 +129,7 @@ void GameScene::Draw()
 	// 背景スプライト描画前処理
 	Sprite::PreDraw(cmdList);
 	// 背景スプライト描画
-	//spriteBG->Draw();
+	spriteBG->Draw();
 
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
