@@ -92,14 +92,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	pointLightPos[1] = 5.0f;
 	pointLightPos[2] = 0.0f;
 
-	//lightGroup->SetPointLightActive(0, false);
-	//lightGroup->SetPointLightActive(1, false);
-	//lightGroup->SetPointLightActive(2, false);
-	//lightGroup->SetSpotLightActive(0, true);
-	//lightGroup->SetSpotLightActive(0, false);
-
 	lightGroup->SetCircleShadowActive(0, true);
-
 
 	//3Dオブジェクトにライトをセット
 	Object3d::SetLight(lightGroup);
@@ -153,24 +146,9 @@ void GameScene::Update()
 		debugText.Print(debugstr.str(), 50, 70, 1.0f);
 	}
 	{
-		//imguiからライトパラメータを反映
-		//lightGroup->SetAmbientColor(XMFLOAT3(ambientColor0));
-		//lightGroup->SetDirLightDir(0, XMVECTOR({ lightDir0[0],lightDir0[1],lightDir0[2],0 }));
-		//lightGroup->SetDirLightColor(0, XMFLOAT3(lightColor0));
-		//lightGroup->SetDirLightDir(1, XMVECTOR({ lightDir1[0],lightDir1[1],lightDir1[2],0 }));
-		//lightGroup->SetDirLightColor(1, XMFLOAT3(lightColor1));
-		//lightGroup->SetDirLightDir(2, XMVECTOR({ lightDir2[0],lightDir2[1],lightDir2[2],0 }));
-		//lightGroup->SetDirLightColor(2, XMFLOAT3(lightColor2));
-
 		lightGroup->SetPointLightPos(0, XMFLOAT3(pointLightPos));
 		lightGroup->SetPointLightColor(0, XMFLOAT3(pointLightColor));
 		lightGroup->SetPointLightAtten(0, XMFLOAT3(pointLightAtten));
-
-		//lightGroup->SetSpotLightDir(0, XMVECTOR({ spotLightDir[0],spotLightDir[1],spotLightDir[2],0 }));
-		//lightGroup->SetSpotLightPos(0, XMFLOAT3(spotLightPos));
-		//lightGroup->SetSpotLightColor(0, XMFLOAT3(spotLightColor));
-		//lightGroup->SetSpotLightAtten(0, XMFLOAT3(spotLightAtten));
-		//lightGroup->SetSpotLightFactorAngle(0, XMFLOAT2(spotLightFactorAngle));
 
 		lightGroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0],circleShadowDir[1],circleShadowDir[2],0 }));
 		lightGroup->SetCircleShadowCasterPos(0, XMFLOAT3({ fighterPos[0],fighterPos[1],fighterPos[2] }));
@@ -191,25 +169,9 @@ void GameScene::Draw()
 	ImGui::SetWindowPos(ImVec2(0, 0));
 	ImGui::SetWindowSize(ImVec2(500, 200));
 
-	//ImGui::ColorEdit3("ambientColor", ambientColor0, ImGuiColorEditFlags_Float);
-	//ImGui::InputFloat3("lightDir0", lightDir0);
-	//ImGui::ColorEdit3("lightColor0", lightColor0, ImGuiColorEditFlags_Float);
-	//ImGui::InputFloat3("lightDir1", lightDir1);
-	//ImGui::ColorEdit3("lightColor1", lightColor1, ImGuiColorEditFlags_Float);
-	//ImGui::InputFloat3("lightDir2", lightDir2);
-	//ImGui::ColorEdit3("lightColor2", lightColor2, ImGuiColorEditFlags_Float);
-
-
 	ImGui::ColorEdit3("pointColor", pointLightColor, ImGuiColorEditFlags_Float);
 	ImGui::InputFloat3("pointLightPos", pointLightPos);
 	ImGui::ColorEdit3("pointLightAtten", pointLightAtten);
-
-	//ImGui::InputFloat3("spotLightDir", spotLightDir);
-	//ImGui::ColorEdit3("spotLightColor", spotLightColor,ImGuiColorEditFlags_Float);
-	//ImGui::InputFloat3("spotLightPos", spotLightPos);
-	//ImGui::InputFloat3("spotLightAtten", spotLightAtten);
-	//ImGui::InputFloat2("spotLightFactorAngle", spotLightFactorAngle);
-
 
 	ImGui::InputFloat3("circleShadowDir", circleShadowDir);
 	ImGui::InputFloat3("circleShadowAtten", circleShadowAtten);
