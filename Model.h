@@ -10,7 +10,7 @@
 /// </summary>
 class Model {
 private: // エイリアス
-	// Microsoft::WRL::を省略
+  // Microsoft::WRL::を省略
 	template<class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -22,16 +22,16 @@ private:
 	static const std::string baseDirectory;
 
 private: // 静的メンバ変数
-	// デバイス
+  // デバイス
 	static ID3D12Device* device;
 	// デスクリプタサイズ
 	static UINT descriptorHandleIncrementSize;
 
 public: // 静的メンバ関数
-	/// <summary>
-	/// 静的初期化
-	/// </summary>
-	/// <param name="device">デバイス</param>
+  /// <summary>
+  /// 静的初期化
+  /// </summary>
+  /// <param name="device">デバイス</param>
 	static void StaticInitialize(ID3D12Device* device);
 
 	/// <summary>
@@ -39,19 +39,19 @@ public: // 静的メンバ関数
 	/// </summary>
 	/// <param name="modelname">モデル名</param>
 	/// <returns>生成されたモデル</returns>
-	static Model* CreateFromOBJ(const std::string& modelname, bool smoothing = false);
+	static Model* CreateFromOBJ(const std::string& modelname);
 
 public: // メンバ関数
-	/// <summary>
-	/// デストラクタ
-	/// </summary>
+  /// <summary>
+  /// デストラクタ
+  /// </summary>
 	~Model();
 
 	/// <summary>
 	/// 初期化
 	/// </summary>
 	/// <param name="modelname">モデル名</param>
-	void Initialize(const std::string& modelname, bool smoothing);
+	void Initialize(const std::string& modelname);
 
 	/// <summary>
 	/// 描画
@@ -59,8 +59,22 @@ public: // メンバ関数
 	/// <param name="cmdList">命令発行先コマンドリスト</param>
 	void Draw(ID3D12GraphicsCommandList* cmdList);
 
+	/// <summary>
+	/// OBJファイルからメッシュ生成
+	/// </summary>
+	/// <param name="modelname">モデル名</param>
+	/// <returns>生成されたモデル</returns>
+	// static Model CreateFromOBJ(const std::string & modelname);
+	static Model* CreateFromOBJ(const std::string& modelname, bool smoothing = false);
+
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="modelname">モデル名</param>
+	// void Initialize(const std::string & modelname); 
+	void Initialize(const std::string& modelname, bool smoothing);
 private: // メンバ変数
-	// 名前
+  // 名前
 	std::string name;
 	// メッシュコンテナ
 	std::vector<Mesh*> meshes;
@@ -72,9 +86,9 @@ private: // メンバ変数
 	ComPtr<ID3D12DescriptorHeap> descHeap;
 
 private: // メンバ関数
-	/// <summary>
-	/// マテリアル読み込み
-	/// </summary>
+  /// <summary>
+  /// マテリアル読み込み
+  /// </summary>
 	void LoadMaterial(const std::string& directoryPath, const std::string& filename);
 
 	/// <summary>

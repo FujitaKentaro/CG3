@@ -40,7 +40,7 @@ BOOL UnadjustWindowRectEx(LPRECT prc, DWORD dwStyle, BOOL fMenu, DWORD dwExStyle
 }
 } // namespace
 
-const wchar_t WinApp::kWindowClassName[] = L"CG3";
+const wchar_t WinApp::kWindowClassName[] = L"DirectXGame";
 
 WinApp* WinApp::GetInstance() {
 	static WinApp instance;
