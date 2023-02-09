@@ -2,6 +2,7 @@
 #include "DirectXCommon.h"
 #include "GameScene.h"
 
+
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int)
 {
@@ -28,7 +29,9 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int)
 	Sprite::StaticInitialize(dxCommon->GetDevice(), WinApp::kWindowWidth, WinApp::kWindowHeight);
 	
 	// 3Dオブジェクト静的初期化
-	ParticleManager::StaticInitialize(dxCommon->GetDevice(), WinApp::kWindowWidth, WinApp::kWindowHeight);
+	Object3d::StaticInitialize(dxCommon->GetDevice());
+
+	Light::StaticInitialize(dxCommon->GetDevice());
 #pragma endregion
 
 	// ゲームシーンの初期化

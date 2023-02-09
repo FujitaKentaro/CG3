@@ -26,6 +26,7 @@ public: // サブクラス
 	struct VertexPos
 	{
 		XMFLOAT3 pos; // xyz座標
+		float scale;
 	};
 	//// 頂点データ構造体
 	//struct VertexPosNormalUv
